@@ -17,6 +17,7 @@
 #define REQ_PING 6
 #define REQ_WHEELS 7
 #define MOVE_STOP 8
+#define REQ_LINESENS 9
 
 void setup()
 {
@@ -89,6 +90,26 @@ void loop()
           sparki.println(ping);
           sparki.updateLCD();
           Serial1.print(ping);
+          Serial1.print("*");
+        break;
+      case REQ_LINESENS:
+          sparki.print("Sensors: ");
+          int svals[5];
+          svals[0] = sparki.edgeLeft();
+          svals[4] = sparki.edgeRight();
+          svals[1] = sparki.lineLeft();   // measure the left IR sensor
+          svals[2] = sparki.lineCenter(); // measure the center IR sensor
+          svals[3] = sparki.lineRight();  // measure the right IR sensor
+          for (int s = 0; s < 5; s++) {
+            sparki.print(svals[s]);
+            sparki.print(" ");
+          }
+          sparki.println();
+          sparki.updateLCD();
+          for (int s = 0; s < 5; s++) {
+            Serial1.print(svals[s]);
+            Serial1.print(" ");
+          }
           Serial1.print("*");
         break;
       case REQ_WHEELS:

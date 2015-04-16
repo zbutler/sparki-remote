@@ -20,6 +20,7 @@ public class Sparki {
 	private static final byte REQ_PING         = 6;
 	private static final byte REQ_WHEELS       = 7;
 	private static final byte MOVE_STOP        = 8;
+	private static final byte REQ_LINESENS     = 9;
 
 	private String portName;
 	private SerialPort serialPort;
@@ -148,6 +149,22 @@ public class Sparki {
             String[] svalues = input.split(" ");
             values[0] = Integer.valueOf(svalues[0]);
             values[1] = Integer.valueOf(svalues[1]);
+        } catch (SerialPortException e) {
+            e.printStackTrace();
+        }
+	return values;
+    }
+
+    public int[] lineSense() {
+        int[] values = new int[5];
+        try {
+            // Send OPCODE and angle
+            serialPort.writeByte(REQ_LINESENS);
+            String input = readString();
+            String[] svalues = input.split(" ");
+            for (int s = 0; s < 5; s++) {
+                values[s] = Integer.valueOf(svalues[s]);
+            }
         } catch (SerialPortException e) {
             e.printStackTrace();
         }
